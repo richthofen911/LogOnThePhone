@@ -1,6 +1,7 @@
 package ap1.com.calibratedbeacondetection;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.perples.recosdk.RECOBeacon;
 import com.perples.recosdk.RECOBeaconManager;
@@ -31,9 +33,9 @@ public class ActivityMain extends Activity implements RECOServiceConnectListener
     String beaconId;
     //String TOBEFOUND_UUID = "23A01AF0-232A-4518-9C0E-323FB773F5EF";
     String TOBEFOUND_UUID = "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0";
-    int TOBEFOUND_MAJOR = 99;
+    int TOBEFOUND_MAJOR = 777;
     //int TOBEFOUND_MAJOR = 64612;
-    int TOBEFOUND_MINOR = 1;
+    //int TOBEFOUND_MINOR = 1;
     //int TOBEFOUND_MINOR = 48499;
 
     String macAddress;
@@ -44,7 +46,14 @@ public class ActivityMain extends Activity implements RECOServiceConnectListener
     public static final boolean DISCONTINUOUS_SCAN = false;
     public static final int COMPLETED = 0;
     private TextView tv_log;
+    private TextView tv_status;
     private ScrollView scrollView;
+    private int count = 0;
+    private int previousMinor;
+    private int rssi1 = 0;
+    private int rssi2 = 0;
+    private int rssi3 = 0;
+    private int rssi = 0;
 
     private String proximity;
 
@@ -64,6 +73,7 @@ public class ActivityMain extends Activity implements RECOServiceConnectListener
         setContentView(R.layout.activity_main);
 
         tv_log= (TextView) findViewById(R.id.tv_log);
+        tv_status = (TextView) findViewById(R.id.tv_status);
         scrollView = (ScrollView) findViewById(R.id.scrv_log);
 
         mRecoManager = RECOBeaconManager.getInstance(getApplicationContext(), false, false);
@@ -112,10 +122,79 @@ public class ActivityMain extends Activity implements RECOServiceConnectListener
     @Override
     public void didRangeBeaconsInRegion(Collection<RECOBeacon> recoBeacons, RECOBeaconRegion recoRegion) {
         synchronized (recoBeacons){
-            for(RECOBeacon recoBeacon: recoBeacons){
-                Log.e("beacon detected, rssi", String.valueOf(recoBeacon.getRssi()));
-                recoBeacon.getRssi();
+            if(rssi1 == 0 || rssi2 == 0 || rssi3 == 0){
+                for(RECOBeacon recoBeacon: recoBeacons){
+                    if(recoBeacon.getMinor() == 1){
+                        if(rssi1 == 0){
+                            rssi1 = recoBeacon.getRssi();
+                        }
+                    }else if(recoBeacon.getMinor() == 2){
+                        if(rssi2 == 0){
+                            rssi2 = recoBeacon.getRssi();
+                        }
+                    }else if(recoBeacon.getMinor() == 3){
+                        if(rssi3 == 0){
+                            rssi3 = recoBeacon.getRssi();
+                        }
+                    }
+                }
+            }else{
+                rssi = (rssi1 + rssi2 + rssi3) / 3;
+                Log.e("beacon detected, rssi1", String.valueOf(rssi1));
+                Log.e("beacon detected, rssi2", String.valueOf(rssi2));
+                Log.e("beacon detected, rssi3", String.valueOf(rssi3));
+                Log.e("rssi calibrated", String.valueOf(rssi));
+                rssi1 = 0;
+                rssi2 = 0;
+                rssi3 = 0;
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+            if(rssi1 == 0 || rssi2 == 0){
+                for(RECOBeacon recoBeacon: recoBeacons){
+                    if(recoBeacon.getMinor() == 1){
+                        if(rssi1 == 0){
+                            rssi1 = recoBeacon.getRssi();
+                        }
+                    }else{
+                        if(rssi2 == 0){
+                            rssi2 = recoBeacon.getRssi();
+                        }
+                    }
+                }
+            }else {
+                rssi = (rssi1 + rssi2) / 2;
+                Log.e("beacon detected, rssi1", String.valueOf(rssi1));
+                Log.e("beacon detected, rssi2", String.valueOf(rssi2));
+                rssi1 = 0;
+                rssi2 = 0;
+                Log.e("rssi calibrated", String.valueOf(rssi));
+                if(rssi > -70){
+                    tv_status.setBackgroundColor(Color.parseColor("#FF3300"));
+                    count = 0;
+                }else{
+                    if(count < 5){
+                        count++;
+                    }else tv_status.setBackgroundColor(Color.parseColor("#00FF00"));
+                }
+            }
+*/
         }
     }
 
@@ -176,10 +255,10 @@ public class ActivityMain extends Activity implements RECOServiceConnectListener
 
     private ArrayList<RECOBeaconRegion> generateBeaconRegion() {
         ArrayList<RECOBeaconRegion> regions = new ArrayList<>();
-
         RECOBeaconRegion recoRegion;
         //recoRegion = new RECOBeaconRegion(this.TOBEFOUND_UUID, "Defined Region");
-        recoRegion = new RECOBeaconRegion(this.TOBEFOUND_UUID, this.TOBEFOUND_MAJOR, this.TOBEFOUND_MINOR, "Defined Region");
+        //recoRegion = new RECOBeaconRegion(this.TOBEFOUND_UUID, this.TOBEFOUND_MAJOR, this.TOBEFOUND_MINOR, "Defined Region");
+        recoRegion = new RECOBeaconRegion(this.TOBEFOUND_UUID, this.TOBEFOUND_MAJOR, "Defined Region");
         regions.add(recoRegion);
 
         return regions;
