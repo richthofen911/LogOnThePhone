@@ -1,26 +1,55 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityMain">
+    tools:context=".ActivityMain"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/image_bottom"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:orientation="horizontal">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_messages"
-        android:layout_above="@id/image_bottom"
-        android:layout_marginBottom="-300dp"
-        android:layout_alignBaseline="@id/image_bottom"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:scrollbars="vertical"/>
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="start"/>
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btn_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="stop"/>
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="clear log"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrv_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/tv_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
+
+
+
+</LinearLayout>
 

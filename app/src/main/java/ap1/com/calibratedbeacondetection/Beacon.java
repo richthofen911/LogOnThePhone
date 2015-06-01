@@ -1,4 +1,4 @@
-package ap1.com.demo;
+package ap1.com.calibratedbeacondetection;
 
 /**
  * Created by admin on 21/04/15.
