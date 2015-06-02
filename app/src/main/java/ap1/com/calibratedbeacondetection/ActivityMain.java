@@ -10,20 +10,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.perples.recosdk.RECOBeacon;
 import com.perples.recosdk.RECOBeaconManager;
 import com.perples.recosdk.RECOBeaconRegion;
 import com.perples.recosdk.RECOErrorCode;
-import com.perples.recosdk.RECOProximity;
 import com.perples.recosdk.RECORangingListener;
 import com.perples.recosdk.RECOServiceConnectListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -103,7 +100,6 @@ public class ActivityMain extends Activity implements RECOServiceConnectListener
                 tv_log.setText("");
             }
         });
-
     }
 
     @Override
@@ -122,50 +118,6 @@ public class ActivityMain extends Activity implements RECOServiceConnectListener
     @Override
     public void didRangeBeaconsInRegion(Collection<RECOBeacon> recoBeacons, RECOBeaconRegion recoRegion) {
         synchronized (recoBeacons){
-            if(rssi1 == 0 || rssi2 == 0 || rssi3 == 0){
-                for(RECOBeacon recoBeacon: recoBeacons){
-                    if(recoBeacon.getMinor() == 1){
-                        if(rssi1 == 0){
-                            rssi1 = recoBeacon.getRssi();
-                        }
-                    }else if(recoBeacon.getMinor() == 2){
-                        if(rssi2 == 0){
-                            rssi2 = recoBeacon.getRssi();
-                        }
-                    }else if(recoBeacon.getMinor() == 3){
-                        if(rssi3 == 0){
-                            rssi3 = recoBeacon.getRssi();
-                        }
-                    }
-                }
-            }else{
-                rssi = (rssi1 + rssi2 + rssi3) / 3;
-                Log.e("beacon detected, rssi1", String.valueOf(rssi1));
-                Log.e("beacon detected, rssi2", String.valueOf(rssi2));
-                Log.e("beacon detected, rssi3", String.valueOf(rssi3));
-                Log.e("rssi calibrated", String.valueOf(rssi));
-                rssi1 = 0;
-                rssi2 = 0;
-                rssi3 = 0;
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
             if(rssi1 == 0 || rssi2 == 0){
                 for(RECOBeacon recoBeacon: recoBeacons){
                     if(recoBeacon.getMinor() == 1){
@@ -194,7 +146,6 @@ public class ActivityMain extends Activity implements RECOServiceConnectListener
                     }else tv_status.setBackgroundColor(Color.parseColor("#00FF00"));
                 }
             }
-*/
         }
     }
 
