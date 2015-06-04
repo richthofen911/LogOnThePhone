@@ -1,6 +1,5 @@
 package ap1.com.calibratedbeacondetection;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import project.richthofen911.callofdroidy.ActivityTwinBeaconDetectionByRECO;
-
 
 public class ActivityMain extends ActivityTwinBeaconDetectionByRECO{
 
